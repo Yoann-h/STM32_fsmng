@@ -244,3 +244,28 @@ FSMng_Result fs_mng_dispDirectory(char *path, char *outString, int bufsize)
     }
     return res;
 }
+
+FSMng_Result fs_mng_PrintFile(char *fcppath, char* pcBuffer, int iBufSize, UART_HandleTypeDef* huart)
+{
+	FSMng_Result res=FSMng_OK;
+	if(f_open(&fileHandler, fcppath, FA_READ)!=FR_OK)
+	{
+		res=FSMng_INTERNAL_ERROR;
+	}
+	else
+	{
+		uint32_t fileSize = f_size(&fileHandler);
+		uint32_t u32BytesCOunt=0;
+		while(u32BytesCOunt<fileSize)
+		{
+			memset(pcBuffer,0,iBufSize);
+			f_gets(pcBuffer,iBufSize,&fileHandler);
+			u32BytesCOunt+=strlen(pcBuffer);
+			HAL_UART_Transmit(huart, (uint8_t *)pcBuffer, strlen(pcBuffer), HAL_MAX_DELAY);
+		}
+		if(f_close(&fileHandler)!=FR_OK)
+		{
+			res=FSMng_INTERNAL_ERROR;
+		}
+	}
+}

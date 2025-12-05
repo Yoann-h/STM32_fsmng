@@ -9,6 +9,7 @@
 #define YHLIB_FS_FS_MNG_H_
 
 #include "fatfs.h"
+#include "stm32l4xx_hal.h"
 
 typedef enum {
 	FSMng_OK,
@@ -34,5 +35,6 @@ FSMng_Result fs_mng_fileExist(char* fcppath);
 FSMng_Result fs_mng_dispDirectory(char *path, char *outString, int bufsize);
 FSMng_Result fs_mng_deleteFile(char* fcppath);
 FSMng_Result fs_mng_createDir(char* fcpDirPath);
+FSMng_Result fs_mng_PrintFile(char *fcppath, char* pcBuffer, int iBufSize, UART_HandleTypeDef* huart);
 
 #endif /* YHLIB_FS_FS_MNG_H_ */
