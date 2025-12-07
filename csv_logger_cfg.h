@@ -8,7 +8,11 @@
 #ifndef FILESYSTEM_CSV_LOGGER_CFG_H_
 #define FILESYSTEM_CSV_LOGGER_CFG_H_
 
+#include "stm32l4xx_hal.h"
+
 #define CSVDataNb 10
-char* cLogPath = "/dataLog.csv";
+extern char* cLogPath;
+extern int iLogFrequency;
+extern uint8_t u8EnableCSV;
 
 #endif /* FILESYSTEM_CSV_LOGGER_CFG_H_ */

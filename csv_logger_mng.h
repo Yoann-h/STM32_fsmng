@@ -24,11 +24,12 @@ typedef struct {
 	char* pcDataName;
 	char* pcUnit;
 	float* pvDataVal;
+	uint8_t u8Digitnb;
 }ts_DataLog;
 
 CSVLoggerMng_Result CSVLoggerMng_Init(char fcSeparator, int fiFrequency);
 CSVLoggerMng_Result CSVLoggerMng_AddData(ts_DataLog* feData);
 CSVLoggerMng_Result CSVLoggerMng_Record();
-CSVLoggerMng_Result CSVLoggerMng_Task();
+CSVLoggerMng_Result CSVLoggerMng_PrintLog(char* pcBuffer, int iBufSize, UART_HandleTypeDef* huart);
 
 #endif /* FILESYSTEM_CSV_LOGGER_MNG_H_ */

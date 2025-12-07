@@ -12,14 +12,16 @@
 ts_DataLog eDataList[CSVDataNb];
 char cSeparator;
 uint8_t u8DataNb = 0;
-int iFrequency;
 extern ts_ltm LocalTime;
+char*  cLogPath= "/dataLog.csv";
+int iLogFrequency=0;
+uint8_t u8EnableCSV=0;
 
 CSVLoggerMng_Result CSVLoggerMng_Init(char fcSeparator, int fiFrequency)
 {
 	CSVLoggerMng_Result res = CSVLoggerMng_OK;
 	cSeparator = fcSeparator;
-	iFrequency = fiFrequency;
+	iLogFrequency = fiFrequency;
 	char headerBuffer[64];
 	memset(headerBuffer,0,64);
 //	if(fs_mng_fileExist(cLogPath)==FSMng_OK)
@@ -33,7 +35,9 @@ CSVLoggerMng_Result CSVLoggerMng_Init(char fcSeparator, int fiFrequency)
 	for(uint8_t i=0;i<u8DataNb;i++)
 	{
 		strcat(headerBuffer,eDataList[i].pcDataName);
+		headerBuffer[strlen(headerBuffer)]='(';
 		strcat(headerBuffer,eDataList[i].pcUnit);
+		headerBuffer[strlen(headerBuffer)]=')';
 		headerBuffer[strlen(headerBuffer)]=cSeparator;
 	}
 	headerBuffer[strlen(headerBuffer)]='\n';
@@ -70,7 +74,9 @@ CSVLoggerMng_Result CSVLoggerMng_Record()
 	memset(cStrLine, 0, 17);
 	for(uint8_t i=0;i<u8DataNb;i++)
 	{
-		sprintf(cStrLine,"%f",*(eDataList[i].pvDataVal));
+		char cformat[10]={0};
+		sprintf(cformat,"%%.%uf",eDataList[i].u8Digitnb);
+		sprintf(cStrLine,cformat,*(eDataList[i].pvDataVal));
 		strcat(lineBuffer,cStrLine);
 		lineBuffer[strlen(lineBuffer)]=cSeparator;
 		memset(cStrLine, 0, 17);
@@ -87,22 +93,18 @@ CSVLoggerMng_Result CSVLoggerMng_PrintLog(char* pcBuffer, int iBufSize, UART_Han
 	fs_mng_PrintFile(cLogPath, pcBuffer, iBufSize, huart);
 	return res;
 }
-CSVLoggerMng_Result CSVLoggerMng_Task()
-{
-	CSVLoggerMng_Result res = CSVLoggerMng_OK;
-	return res;
-}
 
 CSVLoggerMng_Result CSVLoggerMng_test(UART_HandleTypeDef* huart)
 {
 	CSVLoggerMng_Result res = CSVLoggerMng_OK;
 	float data1Val=0;
 	float data2Val=0;
-	ts_DataLog eData={"data1","(unit1)",&data1Val};
+	ts_DataLog eData={"data1","unit1",&data1Val,2};
 	CSVLoggerMng_AddData(&eData);
 	eData.pcDataName="data2";
-	eData.pcUnit    ="(unit2)";
+	eData.pcUnit    ="unit2";
 	eData.pvDataVal=&data2Val;
+	eData.u8Digitnb=0;
 	CSVLoggerMng_AddData(&eData);
 	CSVLoggerMng_Init(';', 1);
 	data1Val=1;
