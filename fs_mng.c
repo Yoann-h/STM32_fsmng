@@ -43,7 +43,7 @@ FSMng_Result fs_mng_createDir(char* fcpDirPath)
 	}
 	else
 	{
-		if(fs_mng_fileExist(fcpDirPath)==FSMng_INTERNAL_ERROR)//folder already exists
+		if(fs_mng_fileExist(fcpDirPath,0)==FSMng_INTERNAL_ERROR)//folder already exists
 		{
 			if(f_mkdir(fcpDirPath)!=FR_OK)
 			{
@@ -181,7 +181,7 @@ FSMng_Result fs_mng_deleteFile(char* fcppath)
 	return res;
 }
 
-FSMng_Result fs_mng_fileExist(char* fcppath)
+FSMng_Result fs_mng_fileExist(char* fcppath, uint32_t* fpFileSize)
 {
 	FILINFO fInfo;
 	FSMng_Result res=FSMng_OK;
@@ -194,6 +194,11 @@ FSMng_Result fs_mng_fileExist(char* fcppath)
 		if(f_stat(fcppath, &fInfo)!=FR_OK)
 		{
 			res=FSMng_INTERNAL_ERROR;
+		}
+		else
+		{
+			if(fpFileSize!=NULL)
+				*fpFileSize = fInfo.fsize;
 		}
 	}
 	else

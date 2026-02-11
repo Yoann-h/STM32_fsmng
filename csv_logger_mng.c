@@ -24,7 +24,7 @@ CSVLoggerMng_Result CSVLoggerMng_Init(char fcSeparator, int fiFrequency)
 	iLogFrequency = fiFrequency;
 	char headerBuffer[64];
 	memset(headerBuffer,0,64);
-//	if(fs_mng_fileExist(cLogPath)==FSMng_OK)
+//	if(fs_mng_fileExist(cLogPath,0)==FSMng_OK)
 //	{
 //
 //	}

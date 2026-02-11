@@ -31,7 +31,7 @@ FRESULT fs_mng_Deinit();
 FSMng_Result fs_mng_readFile(char* fcppath, void* fcbuffer, int fiBufSize);
 FSMng_Result fs_mng_writeFile(char* fcppath, void* fcbuffer, int fiBufSize, FSMng_Option feOption);
 FSMng_Result fs_mng_PartitionSize(int* fpiSize);
-FSMng_Result fs_mng_fileExist(char* fcppath);
+FSMng_Result fs_mng_fileExist(char* fcppath, uint32_t* fpFileSize);
 FSMng_Result fs_mng_dispDirectory(char *path, char *outString, int bufsize);
 FSMng_Result fs_mng_deleteFile(char* fcppath);
 FSMng_Result fs_mng_createDir(char* fcpDirPath);
